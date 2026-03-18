@@ -104,7 +104,12 @@ Format attendu :
     { "name": "Nom article", "packaging": "Unité", "purchasePriceUnit": 0.00 }
   ]
 }
-Règles : ignore totaux, TVA, remises. purchasePriceUnit = nombre décimal uniquement.`
+Règles IMPORTANTES :
+- Utilise TOUJOURS le prix TTC (toutes taxes comprises) ou TVAC (TVA comprise), jamais le prix HTVA ou hors TVA.
+- Si la facture affiche les deux (HTVA et TVAC), prends uniquement le prix TVAC.
+- Si la facture n'affiche que le prix HTVA, calcule le prix TVAC en ajoutant la TVA indiquée.
+- Ignore les lignes de totaux, sous-totaux, remises et frais de port.
+- purchasePriceUnit = nombre décimal uniquement (ex: 12.50).`
         }
       ]
     }]
