@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Scan & Marges — BBB</title>
+  <!-- Icône app BBB pour écran d'accueil smartphone -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz4KPC9zdmc+"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz4KPC9zdmc+"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="BBB"/>
+  <meta name="theme-color" content="#0f172a"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    input[type=number]::-webkit-inner-spin-button { opacity:1; }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="bg-slate-300">
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ── ICONES ───────────────────────────────────────────────────────────────────
+const IconCheck        = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+const IconFileText     = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>;
+const IconChevronRight = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>;
+const IconCamera       = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>;
+const IconArrowLeft    = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
+const IconShoppingBag  = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>;
+const IconTrash        = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>;
+const IconTrendingUp   = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+const IconEdit         = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
+const IconPlus         = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+const IconUpload       = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>;
+const IconKey          = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>;
+const IconSettings     = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+const IconBarChart     = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/><line x1="2" y1="20" x2="22" y2="20"/></svg>;
+
+// ── PERSISTANCE ──────────────────────────────────────────────────────────────
+const DB_INVOICES = 'scanmarges_invoices_v3';
+const DB_APIKEY   = 'scanmarges_mistral_key';
+const loadInvoices = () => { try { return JSON.parse(localStorage.getItem(DB_INVOICES)||'[]'); } catch { return []; } };
+const saveInvoices = (d) => { try { localStorage.setItem(DB_INVOICES, JSON.stringify(d)); } catch {} };
+const loadKey  = () => localStorage.getItem(DB_APIKEY)||'';
+const saveKey  = (k) => localStorage.setItem(DB_APIKEY, k);
+
+// ── CALCUL MARGE ─────────────────────────────────────────────────────────────
+const calcMargin = (inv) => {
+  let buy=0, sell=0;
+  inv.items.forEach(it => { buy+=parseFloat(it.purchasePriceUnit)||0; sell+=parseFloat(it.sellingPriceUnit)||0; });
+  const euro=sell-buy;
+  return { buy, sell, euro, pct: sell>0?(euro/sell)*100:0 };
+};
+
+// ── MISTRAL PIXTRAL (IA principale) ─────────────────────────────────────────
+// Convertit le fichier image en base64
+const fileToBase64 = (file) => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload  = () => res(r.result.split(',')[1]);
+  r.onerror = rej;
+  r.readAsDataURL(file);
+});
+
+// Compresse l'image avant envoi pour réduire la taille et éviter les timeouts
+const compressImage = (file) => new Promise((resolve) => {
+  const img = new Image();
+  const url = URL.createObjectURL(file);
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    const MAX = 1200;
+    let w = img.width, h = img.height;
+    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+    if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    URL.revokeObjectURL(url);
+    resolve(canvas.toDataURL('image/jpeg', 0.82).split(',')[1]);
+  };
+  img.src = url;
+});
+
+const analyzeWithMistral = async (file, apiKey) => {
+  const base64 = await compressImage(file);
+
+  const payload = {
+    model: "pixtral-large-latest",   // modèle vision le plus fiable sur le plan gratuit
+    max_tokens: 1024,
+    messages: [{
+      role: "user",
+      content: [
+        {
+          type: "image_url",
+          image_url: { url: `data:image/jpeg;base64,${base64}` }
+        },
+        {
+          type: "text",
+          text: `Analyse cette facture ou ticket de caisse. Réponds UNIQUEMENT en JSON valide, sans markdown, sans texte avant ou après.
+Format attendu :
+{
+  "storeName": "Nom du fournisseur",
+  "purchaseDate": "YYYY-MM-DD ou vide",
+  "items": [
+    { "name": "Nom article", "packaging": "Unité", "purchasePriceUnit": 0.00 }
+  ]
+}
+Règles IMPORTANTES :
+- Utilise TOUJOURS le prix TTC (toutes taxes comprises) ou TVAC (TVA comprise), jamais le prix HTVA ou hors TVA.
+- Si la facture affiche les deux (HTVA et TVAC), prends uniquement le prix TVAC.
+- Si la facture n'affiche que le prix HTVA, calcule le prix TVAC en ajoutant la TVA indiquée.
+- Ignore les lignes de totaux, sous-totaux, remises et frais de port.
+- purchasePriceUnit = nombre décimal uniquement (ex: 12.50).`
+        }
+      ]
+    }]
+  };
+
+  // Retry automatique jusqu'à 3 fois en cas de rate limit
+  const delays = [2000, 5000, 10000];
+  let lastError = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.status === 429) {
+        // Rate limit — on attend et on réessaie
+        lastError = new Error("Limite atteinte, nouvelle tentative...");
+        if (attempt < 2) await new Promise(r => setTimeout(r, delays[attempt]));
+        continue;
+      }
+
+      if (!res.ok) {
+        const err = await res.json().catch(()=>({}));
+        throw new Error(err?.message || `Erreur Mistral (${res.status})`);
+      }
+
+      const data = await res.json();
+      let text = data.choices?.[0]?.message?.content || '';
+      text = text.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+      const parsed = JSON.parse(text);
+      if (!parsed.items || parsed.items.length === 0) throw new Error("Aucun article détecté.");
+      return parsed;
+
+    } catch(err) {
+      if (err.message.includes("Limite")) { lastError = err; continue; }
+      throw err;
+    }
+  }
+  throw new Error("Limite de requêtes dépassée. Attendez 1 minute et réessayez.");
+};
+
+// ── TESSERACT (fallback sans clé) ────────────────────────────────────────────
+const parseOcrText = (text) => {
+  const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const ignore = /total|tva|remise|sous.total|avoir|escompte|net\s*à\s*payer|montant|solde|htva|tvac|port|livraison/i;
+  const priceRe = /(\d+[.,]\d{2})/g;
+  const items = [];
+  lines.forEach(line => {
+    if (ignore.test(line)) return;
+    const prices = [...line.matchAll(priceRe)].map(m => parseFloat(m[1].replace(',','.')));
+    if (!prices.length) return;
+    const price = prices[prices.length-1];
+    const name = line.replace(/[\d.,€*x\-%]+/g,'').replace(/\s+/g,' ').trim();
+    if (name.length < 2) return;
+    items.push({ name, packaging:'Unité', purchasePriceUnit: price });
+  });
+  return items;
+};
+
+const analyzeWithTesseract = async (file, onProgress) => {
+  const worker = await Tesseract.createWorker('fra+eng', 1, {
+    logger: m => { if (m.status==='recognizing text') onProgress(Math.round(m.progress*100)); }
+  });
+  const { data: { text } } = await worker.recognize(file);
+  await worker.terminate();
+  return parseOcrText(text);
+};
+
+// ── MODAL CONFIRMATION ───────────────────────────────────────────────────────
+const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="bg-white rounded-2xl p-6 w-full max-w-xs shadow-2xl">
+        <h3 className="text-lg font-bold text-slate-800 mb-2">{title}</h3>
+        <p className="text-slate-500 mb-6 text-sm">{message}</p>
+        <div className="flex gap-3 justify-end">
+          <button onClick={onCancel}  className="px-4 py-2 rounded-xl text-slate-600 font-semibold bg-slate-100 active:bg-slate-200">Annuler</button>
+          <button onClick={onConfirm} className="px-4 py-2 rounded-xl text-white font-semibold bg-red-500 active:bg-red-600">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── SWIPEABLE ITEM ───────────────────────────────────────────────────────────
+const SwipeableItem = ({ children, onSwipeRight, onSwipeLeft, isRecovered }) => {
+  const [startX, setStartX] = useState(null);
+  const [tx, setTx] = useState(0);
+  const onStart = e => setStartX(e.touches?e.touches[0].clientX:e.clientX);
+  const onMove  = e => {
+    if (startX===null) return;
+    const diff=(e.touches?e.touches[0].clientX:e.clientX)-startX;
+    if (isRecovered&&diff>0) return;
+    if (diff>0&&!onSwipeRight) return;
+    if (diff<0&&!onSwipeLeft) return;
+    if (Math.abs(diff)<140) setTx(diff);
+  };
+  const onEnd = () => {
+    if (startX===null) return;
+    if (tx>80&&!isRecovered&&onSwipeRight){setTx(220);setTimeout(()=>{onSwipeRight();setTx(0);},220);}
+    else if (tx<-80&&onSwipeLeft){setTx(-220);setTimeout(()=>{onSwipeLeft();setTx(0);},220);}
+    else setTx(0);
+    setStartX(null);
+  };
+  return (
+    <div className="relative w-full overflow-hidden bg-slate-200 rounded-2xl mb-3 shadow-sm select-none">
+      {onSwipeRight&&<div className={`absolute inset-y-0 left-0 flex items-center pl-5 text-white font-bold bg-green-500 w-full transition-opacity ${tx>0?'opacity-100':'opacity-0'}`}><IconCheck s={22} c="mr-2"/>Encaissé</div>}
+      {onSwipeLeft &&<div className={`absolute inset-y-0 right-0 flex items-center pr-5 text-white font-bold bg-red-500 w-full justify-end transition-opacity ${tx<0?'opacity-100':'opacity-0'}`}><IconTrash s={20} c="mr-2"/>Supprimer</div>}
+      <div className="relative w-full bg-white rounded-2xl border border-slate-100 transition-transform duration-200"
+        style={{transform:`translateX(${tx}px)`}}
+        onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
+        onMouseDown={onStart}  onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// ── VUE PARAMETRES (clé API) ─────────────────────────────────────────────────
+const SettingsView = ({ onCancel }) => {
+  const [key, setKey] = useState(loadKey);
+  const [saved, setSaved] = useState(false);
+  const handleSave = () => { saveKey(key.trim()); setSaved(true); setTimeout(()=>setSaved(false),2000); };
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-white px-4 pt-10 pb-3 border-b flex items-center gap-3 sticky top-0 z-20 shadow-sm">
+        <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full"><IconArrowLeft s={20}/></button>
+        <span className="font-bold text-slate-800">Paramètres</span>
+      </header>
+      <div className="flex-1 overflow-y-auto p-5 space-y-6">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+              <IconKey s={20} c="text-orange-600"/>
+            </div>
+            <div>
+              <p className="font-bold text-slate-800">Clé API Mistral</p>
+              <p className="text-xs text-slate-400">Gratuite sur console.mistral.ai</p>
+            </div>
+          </div>
+          <input
+            type="password"
+            value={key}
+            onChange={e=>setKey(e.target.value)}
+            placeholder="Collez votre clé ici..."
+            className="w-full bg-slate-50 border-2 border-slate-200 rounded-xl p-3 text-sm font-mono focus:outline-none focus:border-orange-400 mb-3"
+          />
+          <button onClick={handleSave}
+            className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${saved?'bg-green-500 text-white':'bg-orange-500 text-white active:scale-95'}`}>
+            {saved ? '✓ Clé enregistrée !' : 'Enregistrer la clé'}
+          </button>
+          {key && <p className="text-xs text-green-600 font-semibold mt-2 text-center">✓ Clé configurée — Mistral IA actif</p>}
+          {!key && <p className="text-xs text-slate-400 mt-2 text-center">Sans clé : analyse OCR basique (Tesseract)</p>}
+        </div>
+
+        <div className="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+          <p className="font-bold text-blue-800 mb-3 text-sm">Comment obtenir la clé gratuite ?</p>
+          <div className="space-y-2 text-sm text-blue-700">
+            <p>1. Allez sur <strong>console.mistral.ai</strong></p>
+            <p>2. Créez un compte (email, pas de carte bancaire)</p>
+            <p>3. Menu <strong>API Keys</strong> → <strong>Create new key</strong></p>
+            <p>4. Copiez la clé et collez-la ci-dessus</p>
+          </div>
+        </div>
+
+        <div className="bg-slate-100 rounded-2xl p-4 text-xs text-slate-500 text-center">
+          Votre clé est stockée uniquement sur cet appareil.<br/>Elle n'est jamais envoyée ailleurs qu'à Mistral.
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── VUE DASHBOARD ────────────────────────────────────────────────────────────
+const DashboardView = ({ invoices, onScanClick, onManualClick, onSimulatorClick, onStatsClick, onSettingsClick, onSelect, onMarkRecovered, onDeleteRequest }) => {
+  const hasKey = !!loadKey();
+  const totalGain = invoices.reduce((acc,inv)=>acc+calcMargin(inv).euro, 0);
+  const sorted = [...invoices].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  return (
+    <div className="flex flex-col h-full bg-slate-50">
+      <header className="bg-slate-900 text-white px-6 pt-10 pb-6 rounded-b-3xl shadow-lg">
+        <div className="flex justify-between items-start">
+          <div>
+            <p className="text-slate-400 text-xs uppercase tracking-widest">Scan & Marges</p>
+            <h1 className="text-2xl font-black mt-1">Mes Achats</h1>
+          </div>
+          <button onClick={onSettingsClick} className="p-2 bg-white/10 rounded-xl mt-1">
+            <IconSettings s={20} c="text-white"/>
+          </button>
+        </div>
+        <div className="mt-4 bg-white/10 rounded-2xl p-4 flex justify-between items-center">
+          <div>
+            <p className="text-slate-400 text-xs uppercase">Gain total estimé</p>
+            <p className={`text-3xl font-black mt-0.5 ${totalGain>=0?'text-green-400':'text-red-400'}`}>{totalGain.toFixed(2)} €</p>
+          </div>
+          <div className="text-right">
+            <p className="text-slate-400 text-xs uppercase">Factures</p>
+            <p className="text-3xl font-black mt-0.5">{invoices.length}</p>
+          </div>
+        </div>
+        {!hasKey && (
+          <button onClick={onSettingsClick} className="mt-3 w-full bg-orange-500/20 border border-orange-500/40 text-orange-300 rounded-xl py-2 text-xs font-semibold flex items-center justify-center gap-2">
+            <IconKey s={14}/>Configurer la clé Mistral pour un scan précis
+          </button>
+        )}
+      </header>
+
+      <div className="flex-1 overflow-y-auto p-4 pb-32">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Historique</p>
+        {sorted.length===0
+          ? <div className="text-center text-slate-400 mt-20 opacity-60"><IconFileText s={60} c="mx-auto mb-4"/><p className="font-semibold">Aucune facture</p><p className="text-sm mt-1">Scannez ou saisissez votre première facture</p></div>
+          : sorted.map(inv => {
+            const {euro} = calcMargin(inv);
+            return (
+              <SwipeableItem key={inv.id} isRecovered={inv.isRecovered}
+                onSwipeRight={()=>onMarkRecovered(inv.id)}
+                onSwipeLeft={()=>onDeleteRequest(inv.id)}>
+                <div className="p-4 flex items-center gap-3 cursor-pointer" onClick={()=>onSelect(inv)}>
+                  <div className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${inv.isRecovered?'bg-green-100 text-green-600':'bg-blue-100 text-blue-600'}`}>
+                    {inv.isRecovered?<IconCheck s={22}/>:<IconShoppingBag s={20}/>}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-slate-800 truncate text-sm">{inv.storeName}</p>
+                    <p className="text-[11px] text-slate-400">{new Date(inv.date).toLocaleDateString('fr-FR')} · {inv.items.length} article{inv.items.length>1?'s':''}</p>
+                    <span className={`inline-flex mt-1 px-2 py-0.5 rounded-md text-[10px] font-bold ${euro>0?'bg-green-100 text-green-700':'bg-slate-100 text-slate-500'}`}>
+                      Gain : {euro.toFixed(2)} €
+                    </span>
+                  </div>
+                  <IconChevronRight s={16} c="text-slate-300 shrink-0"/>
+                </div>
+              </SwipeableItem>
+            );
+          })
+        }
+        {sorted.length>0&&<p className="text-center text-xs text-slate-400 mt-1">← Glissez : encaisser / supprimer →</p>}
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-4 py-4 flex gap-2">
+        <button onClick={onSimulatorClick} title="Simulateur" className="bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+          <IconTrendingUp s={20}/>
+        </button>
+        <button onClick={onStatsClick} title="Statistiques" className="bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+          <IconBarChart s={20}/>
+        </button>
+        <button onClick={onManualClick} title="Saisie manuelle" className="bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+          <IconEdit s={20}/>
+        </button>
+        <button onClick={onScanClick} className="flex-1 bg-blue-600 text-white rounded-2xl shadow-lg flex items-center justify-center gap-2 font-bold active:scale-95 transition-transform text-sm py-3">
+          <IconUpload s={18}/>Scanner
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ── VUE SCANNER ──────────────────────────────────────────────────────────────
+const ScannerView = ({ onCancel, onScanComplete }) => {
+  const [step, setStep]         = useState('pick');
+  const [imgSrc, setImgSrc]     = useState(null);
+  const [imgFile, setImgFile]   = useState(null);
+  const [progress, setProgress] = useState(0);
+  const [statusMsg, setStatus]  = useState('');
+  const [items, setItems]       = useState([]);
+  const [storeName, setStoreName] = useState('Fournisseur');
+  const [date, setDate]         = useState(new Date().toISOString().split('T')[0]);
+  const [error, setError]       = useState('');
+  const fileRef = useRef();
+
+  const handleFile = e => {
+    const file = e.target.files?.[0]; if (!file) return;
+    setImgFile(file);
+    const r = new FileReader();
+    r.onload = ev => { setImgSrc(ev.target.result); setStep('preview'); };
+    r.readAsDataURL(file);
+  };
+
+  const startAnalysis = async () => {
+    setStep('analyzing'); setError(''); setProgress(0);
+    const apiKey = loadKey();
+    try {
+      if (apiKey) {
+        setStatus('Analyse Mistral en cours... (10-20 sec, nouvel essai auto si besoin)');
+        const data = await analyzeWithMistral(imgFile, apiKey);
+        if (data.storeName) setStoreName(data.storeName);
+        if (data.purchaseDate) setDate(data.purchaseDate);
+        setItems(data.items.map((it,i)=>({...it, id:`ai_${i}`, sellingPriceUnit:''})));
+        setStep('review');
+      } else {
+        setStatus('Analyse OCR en cours (Tesseract)...');
+        const parsed = await analyzeWithTesseract(imgFile, p=>{setProgress(p);});
+        setItems(parsed.map((it,i)=>({...it, id:`ocr_${i}`, sellingPriceUnit:''})));
+        setStep(parsed.length>0?'review':'error');
+        if (parsed.length===0) setError("Aucun article détecté. Photo floue ? Configurez la clé Mistral pour de meilleurs résultats.");
+      }
+    } catch(err) {
+      setStep('error');
+      setError(err.message);
+    }
+  };
+
+  const updateItem = (id,f,v) => setItems(p=>p.map(it=>it.id===id?{...it,[f]:v}:it));
+  const removeItem = id => setItems(p=>p.filter(it=>it.id!==id));
+  const addItem    = () => setItems(p=>[...p,{id:`m_${Date.now()}`,name:'',packaging:'Unité',purchasePriceUnit:'',sellingPriceUnit:''}]);
+
+  const handleSave = () => {
+    const valid = items.filter(it=>it.name.trim()&&parseFloat(it.purchasePriceUnit)>=0)
+      .map(it=>({...it, purchasePriceUnit:parseFloat(it.purchasePriceUnit)||0}));
+    if (!valid.length) return alert("Ajoutez au moins un article valide.");
+    onScanComplete({id:`inv_${Date.now()}`, date:new Date(date).toISOString(), storeName:storeName.trim()||'Fournisseur', isRecovered:false, items:valid});
+  };
+
+  // PICK
+  if (step==='pick') return (
+    <div className="flex flex-col h-full bg-slate-900 text-white">
+      <header className="p-4 pt-10 flex items-center gap-3">
+        <button onClick={onCancel} className="p-2 bg-white/10 rounded-full"><IconArrowLeft s={22}/></button>
+        <span className="font-bold text-lg">Scanner une facture</span>
+      </header>
+      <div className="flex-1 flex flex-col items-center justify-center p-8 gap-6">
+        <div className="bg-white/10 rounded-3xl p-8 w-full flex flex-col items-center gap-4 border-2 border-dashed border-white/20">
+          <IconUpload s={56} c="text-blue-300"/>
+          <p className="font-bold text-lg text-center">Choisissez votre facture</p>
+          <p className="text-slate-400 text-sm text-center">Photo depuis la galerie ou caméra directement</p>
+          <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handleFile} className="hidden"/>
+          <button onClick={()=>fileRef.current.click()}
+            className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2">
+            <IconCamera s={22}/>Prendre / Choisir une photo
+          </button>
+        </div>
+        <div className={`w-full rounded-2xl p-3 text-xs text-center font-semibold ${loadKey()?'bg-green-500/20 text-green-300':'bg-orange-500/20 text-orange-300'}`}>
+          {loadKey()?'✓ Mistral IA actif — analyse précise':'⚠ Clé Mistral non configurée — OCR basique'}
+        </div>
+      </div>
+    </div>
+  );
+
+  // PREVIEW
+  if (step==='preview') return (
+    <div className="flex flex-col h-full bg-slate-900 text-white">
+      <header className="p-4 pt-10 flex items-center gap-3">
+        <button onClick={()=>setStep('pick')} className="p-2 bg-white/10 rounded-full"><IconArrowLeft s={22}/></button>
+        <span className="font-bold text-lg">Vérifiez la photo</span>
+      </header>
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        <div className="rounded-2xl overflow-hidden border-2 border-white/20">
+          <img src={imgSrc} alt="facture" className="w-full object-contain max-h-96"/>
+        </div>
+        <p className="text-slate-400 text-sm text-center">La facture est-elle nette et bien cadrée ?</p>
+        <button onClick={startAnalysis} className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold active:scale-95 transition-transform">
+          {loadKey()?'Analyser avec Mistral IA ✨':'Analyser avec OCR'}
+        </button>
+        <button onClick={()=>setStep('pick')} className="w-full bg-white/10 text-white py-3 rounded-2xl font-semibold active:scale-95">
+          Reprendre une photo
+        </button>
+      </div>
+    </div>
+  );
+
+  // ANALYZING
+  if (step==='analyzing') return (
+    <div className="flex flex-col h-full bg-slate-900 text-white items-center justify-center gap-6 p-8">
+      <div className="w-20 h-20 rounded-full border-4 border-blue-500 border-t-transparent spin"/>
+      <p className="text-xl font-black text-center">{statusMsg}</p>
+      {!loadKey()&&(
+        <div className="w-full bg-white/10 rounded-full h-3">
+          <div className="bg-blue-500 h-3 rounded-full transition-all duration-300" style={{width:`${progress}%`}}/>
+        </div>
+      )}
+      {!loadKey()&&<p className="text-blue-300 font-bold">{progress}%</p>}
+    </div>
+  );
+
+  // ERROR
+  if (step==='error') return (
+    <div className="flex flex-col h-full bg-slate-900 text-white">
+      <header className="p-4 pt-10 flex items-center gap-3">
+        <button onClick={onCancel} className="p-2 bg-white/10 rounded-full"><IconArrowLeft s={22}/></button>
+        <span className="font-bold text-lg">Erreur d'analyse</span>
+      </header>
+      <div className="flex-1 flex flex-col items-center justify-center p-8 gap-5">
+        <div className="bg-red-500/20 rounded-3xl p-8 w-full text-center border border-red-500/30">
+          <p className="text-red-300 font-bold text-lg mb-2">Échec de l'analyse</p>
+          <p className="text-slate-400 text-sm">{error}</p>
+        </div>
+        <button onClick={()=>setStep('pick')} className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold active:scale-95">Réessayer</button>
+        <button onClick={onCancel} className="w-full bg-white/10 text-white py-3 rounded-2xl font-semibold active:scale-95">Saisie manuelle</button>
+      </div>
+    </div>
+  );
+
+  // REVIEW
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-white px-4 pt-10 pb-3 border-b flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full"><IconArrowLeft s={20}/></button>
+        <div className="text-center">
+          <p className="font-bold text-slate-800">Vérifiez les articles</p>
+          <p className="text-xs text-slate-400">{items.length} détecté{items.length>1?'s':''} · corrigez si besoin</p>
+        </div>
+        <button onClick={handleSave} className="bg-blue-600 text-white px-3 py-2 rounded-xl text-sm font-bold active:scale-95">Enregistrer</button>
+      </header>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-10">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+          <label className="text-xs font-bold text-slate-400 uppercase">Fournisseur</label>
+          <input type="text" value={storeName} onChange={e=>setStoreName(e.target.value)}
+            className="w-full font-bold text-slate-800 border-b-2 border-slate-200 py-2 focus:outline-none focus:border-blue-500 bg-transparent mb-3"/>
+          <label className="text-xs font-bold text-slate-400 uppercase">Date</label>
+          <input type="date" value={date} onChange={e=>setDate(e.target.value)}
+            className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-blue-500 bg-transparent"/>
+        </div>
+        <div className="rounded-2xl overflow-hidden border border-slate-200">
+          <img src={imgSrc} alt="facture" className="w-full object-contain max-h-36"/>
+        </div>
+        <div className="flex justify-between items-center px-1">
+          <p className="text-xs font-bold text-slate-400 uppercase">Articles détectés</p>
+          <button onClick={addItem} className="flex items-center gap-1 text-blue-600 bg-blue-50 px-3 py-1 rounded-lg text-sm font-semibold"><IconPlus s={14}/>Ajouter</button>
+        </div>
+        {items.map(item=>(
+          <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 relative">
+            <button onClick={()=>removeItem(item.id)} className="absolute top-3 right-3 text-slate-300 active:text-red-500 p-1"><IconTrash s={16}/></button>
+            <input type="text" value={item.name} onChange={e=>updateItem(item.id,'name',e.target.value)}
+              placeholder="Nom du produit" className="w-10/12 font-bold text-slate-800 border-b border-slate-100 pb-1 mb-3 focus:outline-none bg-transparent"/>
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <label className="text-[9px] text-slate-400 uppercase font-bold">Conditionnement</label>
+                <input type="text" value={item.packaging} onChange={e=>updateItem(item.id,'packaging',e.target.value)}
+                  className="w-full bg-slate-50 p-2 rounded-lg text-xs focus:outline-none"/>
+              </div>
+              <div className="w-1/3">
+                <label className="text-[9px] text-slate-400 uppercase font-bold">Achat (€)</label>
+                <input type="number" step="0.01" value={item.purchasePriceUnit} onChange={e=>updateItem(item.id,'purchasePriceUnit',e.target.value)}
+                  placeholder="0.00" className="w-full bg-orange-50 text-orange-800 font-bold p-2 rounded-lg text-sm focus:outline-none"/>
+              </div>
+            </div>
+          </div>
+        ))}
+        {items.length===0&&<div className="text-center text-slate-400 py-8 text-sm">Aucun article — ajoutez-en manuellement</div>}
+      </div>
+    </div>
+  );
+};
+
+// ── VUE SAISIE MANUELLE ──────────────────────────────────────────────────────
+const ManualEntryView = ({ onCancel, onSave }) => {
+  const [storeName, setStoreName] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [items, setItems] = useState([{id:1,name:'',packaging:'Unité',purchasePriceUnit:''}]);
+  const addItem    = () => setItems(p=>[...p,{id:Date.now(),name:'',packaging:'Unité',purchasePriceUnit:''}]);
+  const updateItem = (id,f,v) => setItems(p=>p.map(it=>it.id===id?{...it,[f]:v}:it));
+  const removeItem = id => { if(items.length>1) setItems(p=>p.filter(it=>it.id!==id)); };
+  const handleSave = () => {
+    const valid = items.filter(it=>it.name.trim()&&parseFloat(it.purchasePriceUnit)>=0)
+      .map((it,i)=>({id:`it_${Date.now()}_${i}`,name:it.name,packaging:it.packaging,purchasePriceUnit:parseFloat(it.purchasePriceUnit)||0,sellingPriceUnit:''}));
+    if (!valid.length) return alert("Saisissez au moins un article valide.");
+    onSave({id:`inv_${Date.now()}`,date:new Date(date).toISOString(),storeName:storeName.trim()||'Achat sans nom',isRecovered:false,items:valid});
+  };
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-white px-4 pt-10 pb-3 border-b flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full"><IconArrowLeft s={20}/></button>
+        <span className="font-bold text-slate-800">Saisie Manuelle</span>
+        <button onClick={handleSave} className="bg-blue-600 text-white px-3 py-2 rounded-xl text-sm font-bold active:scale-95">Enregistrer</button>
+      </header>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-10">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+          <label className="text-xs font-bold text-slate-400 uppercase">Fournisseur</label>
+          <input type="text" value={storeName} onChange={e=>setStoreName(e.target.value)} placeholder="Ex: Makro, Metro..."
+            className="w-full font-bold text-slate-800 border-b-2 border-slate-200 py-2 focus:outline-none focus:border-blue-500 bg-transparent mb-3"/>
+          <label className="text-xs font-bold text-slate-400 uppercase">Date d'achat</label>
+          <input type="date" value={date} onChange={e=>setDate(e.target.value)}
+            className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-blue-500 bg-transparent"/>
+        </div>
+        <div className="flex justify-between items-center px-1">
+          <p className="text-xs font-bold text-slate-400 uppercase">Articles</p>
+          <button onClick={addItem} className="flex items-center gap-1 text-blue-600 bg-blue-50 px-3 py-1 rounded-lg text-sm font-semibold"><IconPlus s={14}/>Ajouter</button>
+        </div>
+        {items.map(item=>(
+          <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 relative">
+            <button onClick={()=>removeItem(item.id)} className="absolute top-3 right-3 text-slate-300 active:text-red-500 p-1"><IconTrash s={16}/></button>
+            <input type="text" value={item.name} onChange={e=>updateItem(item.id,'name',e.target.value)} placeholder="Nom du produit"
+              className="w-10/12 font-bold text-slate-800 border-b border-slate-100 pb-1 mb-3 focus:outline-none bg-transparent"/>
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <label className="text-[9px] text-slate-400 uppercase font-bold">Conditionnement</label>
+                <input type="text" value={item.packaging} onChange={e=>updateItem(item.id,'packaging',e.target.value)}
+                  className="w-full bg-slate-50 p-2 rounded-lg text-xs focus:outline-none"/>
+              </div>
+              <div className="w-1/3">
+                <label className="text-[9px] text-slate-400 uppercase font-bold">Achat (€)</label>
+                <input type="number" step="0.01" value={item.purchasePriceUnit} onChange={e=>updateItem(item.id,'purchasePriceUnit',e.target.value)}
+                  placeholder="0.00" className="w-full bg-blue-50 text-blue-800 font-bold p-2 rounded-lg text-sm focus:outline-none"/>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── VUE DETAIL ───────────────────────────────────────────────────────────────
+const DetailView = ({ inv, onCancel, onUpdatePrice, onDeleteRequest, onDeleteItem }) => {
+  const {buy,sell,euro,pct} = calcMargin(inv);
+  const handleKeyDown = (e,i) => {
+    if (e.key==='Enter'||e.key==='ArrowDown'){e.preventDefault();document.getElementById(`pv_${i+1}`)?.focus();}
+    if (e.key==='ArrowUp'){e.preventDefault();document.getElementById(`pv_${i-1}`)?.focus();}
+  };
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-white px-4 pt-10 pb-3 border-b flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <button onClick={onCancel} className="p-2 bg-slate-100 rounded-full"><IconArrowLeft s={20}/></button>
+        <div className="text-center flex-1 px-3 overflow-hidden">
+          <h2 className="font-bold truncate text-slate-800">{inv.storeName}</h2>
+          <p className="text-[10px] text-slate-400 uppercase">{new Date(inv.date).toLocaleDateString('fr-FR')}</p>
+        </div>
+        <button onClick={()=>onDeleteRequest(inv.id)} className="p-2 text-red-400 active:text-red-600"><IconTrash s={20}/></button>
+      </header>
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 pb-10">
+        <div className="bg-slate-900 text-white rounded-2xl p-5 shadow-xl">
+          <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-white/10">
+            <div><p className="text-[9px] text-slate-400 uppercase">Achat Total</p><p className="font-bold text-xl">{buy.toFixed(2)} €</p></div>
+            <div><p className="text-[9px] text-slate-400 uppercase">Vente Totale</p><p className="font-bold text-xl">{sell.toFixed(2)} €</p></div>
+          </div>
+          <div className="flex justify-between items-center">
+            <p className={`text-3xl font-black ${euro>=0?'text-green-400':'text-red-400'}`}>{euro.toFixed(2)} €</p>
+            <div className={`px-3 py-1 rounded-full font-bold text-xs ${euro>=0?'bg-green-500 text-slate-900':'bg-red-500 text-white'}`}>{pct.toFixed(1)}%</div>
+          </div>
+        </div>
+        <p className="text-xs text-slate-400 text-center">Saisissez vos prix de vente · Entrée pour passer au suivant</p>
+        {inv.items.map((item,i)=>(
+          <div key={item.id} className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <div className="flex justify-between items-start mb-3">
+              <div className="flex-1 min-w-0 pr-2">
+                <p className="font-bold text-slate-800 text-sm truncate">{item.name}</p>
+                <p className="text-[10px] text-slate-400">{item.packaging}</p>
+              </div>
+              <button onClick={()=>onDeleteItem(inv.id,item.id)} className="text-slate-200 active:text-red-400 p-1 shrink-0"><IconTrash s={14}/></button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-50 p-3 rounded-xl">
+                <p className="text-[8px] text-slate-400 uppercase mb-1">Achat</p>
+                <p className="font-black text-sm text-slate-700">{item.purchasePriceUnit.toFixed(2)} €</p>
+              </div>
+              <div className="bg-blue-50 p-3 rounded-xl border border-blue-100">
+                <p className="text-[8px] text-blue-500 uppercase mb-1">Prix de vente</p>
+                <input id={`pv_${i}`} type="number" step="0.01"
+                  value={item.sellingPriceUnit}
+                  onChange={e=>onUpdatePrice(inv.id,item.id,e.target.value)}
+                  onKeyDown={e=>handleKeyDown(e,i)}
+                  placeholder="0.00"
+                  className="w-full bg-transparent font-black text-sm focus:outline-none text-blue-800"/>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ── VUE SIMULATEUR ───────────────────────────────────────────────────────────
+const SimulatorView = ({ invoices, onCancel }) => {
+  const [target, setTarget] = useState('');
+  const [proposal, setProposal] = useState(null);
+  const generate = () => {
+    const goal=parseFloat(target); if(!goal||goal<=0) return;
+    const products=[];
+    invoices.forEach(inv=>inv.items.forEach(it=>{
+      const margin=(parseFloat(it.sellingPriceUnit)||0)-(parseFloat(it.purchasePriceUnit)||0);
+      if(margin>0) products.push({...it,margin});
+    }));
+    if(!products.length) return alert("Remplissez d'abord des prix de vente dans vos factures.");
+    let current=0, items=products.map(p=>({...p,qty:0})), iters=0;
+    while(current<goal&&iters<50000){const p=items[Math.floor(Math.random()*items.length)];p.qty++;current+=p.margin;iters++;}
+    setProposal({items:items.filter(i=>i.qty>0),total:current});
+  };
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-indigo-600 text-white px-4 pt-10 pb-4 flex items-center justify-between">
+        <button onClick={onCancel} className="p-2 bg-white/20 rounded-full"><IconArrowLeft s={20}/></button>
+        <h2 className="font-bold">Simulateur de gain</h2>
+        <div className="w-10"/>
+      </header>
+      <div className="flex-1 overflow-y-auto p-5 space-y-4">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+          <p className="text-xs font-bold text-slate-400 uppercase mb-3">Gain visé (€)</p>
+          <div className="flex gap-2">
+            <input type="number" value={target} onChange={e=>setTarget(e.target.value)} placeholder="Ex: 500"
+              className="flex-1 bg-slate-50 border border-slate-200 p-3 rounded-xl font-black text-lg focus:ring-2 focus:ring-indigo-500 outline-none"/>
+            <button onClick={generate} className="bg-indigo-600 text-white px-5 rounded-xl font-bold active:scale-95 transition-transform">Go</button>
+          </div>
+        </div>
+        {proposal&&(
+          <div className="space-y-3">
+            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-6 rounded-2xl shadow-xl">
+              <p className="text-xs opacity-70 mb-1 uppercase">Marge estimée</p>
+              <p className="text-4xl font-black">{proposal.total.toFixed(2)} €</p>
+              <p className="text-indigo-200 text-sm mt-1">en vendant les articles ci-dessous</p>
+            </div>
+            {proposal.items.map((it,i)=>(
+              <div key={i} className="bg-white rounded-2xl p-4 flex justify-between items-center shadow-sm border border-slate-100">
+                <div><p className="font-bold text-slate-800 text-sm">{it.name}</p><p className="text-[10px] text-slate-400">{it.packaging} · +{it.margin.toFixed(2)} €/unité</p></div>
+                <div className="bg-indigo-50 text-indigo-700 font-black px-4 py-2 rounded-xl border border-indigo-100">x {it.qty}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+// ── VUE STATISTIQUES ─────────────────────────────────────────────────────────
+const StatsView = ({ invoices, onCancel }) => {
+  const [mode, setMode] = useState('month'); // 'month' | 'year'
+
+  const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
+  // Calcule les gains par mois (12 derniers mois)
+  const monthlyData = () => {
+    const now = new Date();
+    const data = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${d.getMonth()}`;
+      const label = MONTHS_FR[d.getMonth()] + (i > 0 && d.getFullYear() < now.getFullYear() ? ' ' + String(d.getFullYear()).slice(2) : '');
+      const gain = invoices
+        .filter(inv => { const id = new Date(inv.date); return id.getFullYear() === d.getFullYear() && id.getMonth() === d.getMonth(); })
+        .reduce((acc, inv) => acc + calcMargin(inv).euro, 0);
+      data.push({ label, gain: parseFloat(gain.toFixed(2)) });
+    }
+    return data;
+  };
+
+  // Calcule les gains par année (5 dernières années)
+  const yearlyData = () => {
+    const now = new Date();
+    const data = [];
+    for (let i = 4; i >= 0; i--) {
+      const year = now.getFullYear() - i;
+      const gain = invoices
+        .filter(inv => new Date(inv.date).getFullYear() === year)
+        .reduce((acc, inv) => acc + calcMargin(inv).euro, 0);
+      data.push({ label: String(year), gain: parseFloat(gain.toFixed(2)) });
+    }
+    return data;
+  };
+
+  const data = mode === 'month' ? monthlyData() : yearlyData();
+  const maxGain = Math.max(...data.map(d => Math.abs(d.gain)), 1);
+  const totalGain = data.reduce((a, d) => a + d.gain, 0);
+  const avgGain = data.filter(d => d.gain !== 0).length > 0
+    ? totalGain / data.filter(d => d.gain !== 0).length : 0;
+  const bestPeriod = data.reduce((best, d) => d.gain > best.gain ? d : best, data[0] || {gain:0});
+
+  // Graphique SVG en barres
+  const BAR_W = mode === 'month' ? 18 : 36;
+  const CHART_H = 140;
+  const CHART_W = 300;
+  const barCount = data.length;
+  const spacing = (CHART_W - barCount * BAR_W) / (barCount + 1);
+
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-emerald-700 text-white px-4 pt-10 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg">
+        <button onClick={onCancel} className="p-2 bg-white/20 rounded-full"><IconArrowLeft s={20}/></button>
+        <h2 className="font-bold text-lg">Statistiques</h2>
+        <div className="w-10"/>
+      </header>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-10">
+
+        {/* Toggle mois / année */}
+        <div className="bg-white rounded-2xl p-1.5 flex shadow-sm border border-slate-100">
+          <button onClick={()=>setMode('month')}
+            className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${mode==='month'?'bg-emerald-600 text-white shadow':'text-slate-400'}`}>
+            Par mois
+          </button>
+          <button onClick={()=>setMode('year')}
+            className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${mode==='year'?'bg-emerald-600 text-white shadow':'text-slate-400'}`}>
+            Par année
+          </button>
+        </div>
+
+        {/* Cartes résumé */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Gain total</p>
+            <p className={`text-2xl font-black mt-1 ${totalGain>=0?'text-emerald-600':'text-red-500'}`}>{totalGain.toFixed(2)} €</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Moyenne</p>
+            <p className={`text-2xl font-black mt-1 ${avgGain>=0?'text-blue-600':'text-red-500'}`}>{avgGain.toFixed(2)} €</p>
+            <p className="text-[9px] text-slate-400 mt-0.5">{mode==='month'?'/ mois actif':'/ année active'}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Meilleure période</p>
+            <p className="text-lg font-black mt-1 text-slate-800">{bestPeriod?.label || '—'}</p>
+            <p className="text-[10px] text-emerald-600 font-bold">{bestPeriod?.gain?.toFixed(2) || 0} €</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Factures</p>
+            <p className="text-2xl font-black mt-1 text-slate-800">{invoices.length}</p>
+            <p className="text-[9px] text-slate-400 mt-0.5">au total</p>
+          </div>
+        </div>
+
+        {/* Graphique */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+          <p className="text-xs font-bold text-slate-500 uppercase mb-4">
+            {mode==='month'?'Gains — 12 derniers mois':'Gains — 5 dernières années'}
+          </p>
+
+          {invoices.length === 0 ? (
+            <div className="text-center text-slate-400 py-10 text-sm">
+              <IconBarChart s={40} c="mx-auto mb-3 opacity-30"/>
+              <p>Aucune donnée à afficher</p>
+              <p className="text-xs mt-1">Ajoutez des factures avec des prix de vente</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <svg viewBox={`0 0 ${CHART_W} ${CHART_H + 30}`} className="w-full" style={{minWidth: mode==='month'?'300px':'200px'}}>
+                {/* Lignes de grille */}
+                {[0, 0.25, 0.5, 0.75, 1].map((r, i) => (
+                  <g key={i}>
+                    <line x1="0" y1={CHART_H * (1-r)} x2={CHART_W} y2={CHART_H * (1-r)}
+                      stroke="#f1f5f9" strokeWidth="1"/>
+                    <text x="0" y={CHART_H * (1-r) - 2} fontSize="7" fill="#94a3b8">
+                      {(maxGain * r).toFixed(0)}€
+                    </text>
+                  </g>
+                ))}
+
+                {/* Barres */}
+                {data.map((d, i) => {
+                  const x = spacing + i * (BAR_W + spacing);
+                  const barH = Math.max(2, (Math.abs(d.gain) / maxGain) * CHART_H);
+                  const y = d.gain >= 0 ? CHART_H - barH : CHART_H;
+                  const color = d.gain > 0 ? '#10b981' : d.gain < 0 ? '#ef4444' : '#e2e8f0';
+                  return (
+                    <g key={i}>
+                      <rect x={x} y={y} width={BAR_W} height={barH}
+                        fill={color} rx="3" opacity="0.85"/>
+                      {d.gain !== 0 && (
+                        <text x={x + BAR_W/2} y={y - 3} textAnchor="middle" fontSize="6" fill={color} fontWeight="bold">
+                          {d.gain > 0 ? '+' : ''}{d.gain.toFixed(0)}
+                        </text>
+                      )}
+                      <text x={x + BAR_W/2} y={CHART_H + 14} textAnchor="middle" fontSize="7" fill="#64748b">
+                        {d.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Ligne zéro */}
+                <line x1="0" y1={CHART_H} x2={CHART_W} y2={CHART_H} stroke="#cbd5e1" strokeWidth="1"/>
+              </svg>
+            </div>
+          )}
+
+          <div className="flex gap-4 mt-3 justify-center">
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm bg-emerald-500"/>Gain positif
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm bg-red-400"/>Gain négatif
+            </div>
+          </div>
+        </div>
+
+        {/* Détail par période */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-4 py-3 border-b border-slate-100">
+            <p className="text-xs font-bold text-slate-500 uppercase">Détail</p>
+          </div>
+          {data.filter(d => d.gain !== 0).length === 0
+            ? <p className="text-center text-slate-400 text-sm py-6">Aucun gain enregistré</p>
+            : [...data].reverse().filter(d => d.gain !== 0).map((d, i) => (
+              <div key={i} className="flex justify-between items-center px-4 py-3 border-b border-slate-50 last:border-0">
+                <p className="font-semibold text-slate-700 text-sm">{d.label}</p>
+                <p className={`font-black text-sm ${d.gain>0?'text-emerald-600':'text-red-500'}`}>
+                  {d.gain>0?'+':''}{d.gain.toFixed(2)} €
+                </p>
+              </div>
+            ))
+          }
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+// ── APP PRINCIPALE ───────────────────────────────────────────────────────────
+function App() {
+  const [view, setView]               = useState('dashboard');
+  const [invoices, setInvoices]       = useState(loadInvoices);
+  const [selectedInv, setSelectedInv] = useState(null);
+  const [toDelete, setToDelete]       = useState(null);
+
+  useEffect(()=>{ saveInvoices(invoices); }, [invoices]);
+
+  const updateInvoices = updater => {
+    setInvoices(prev => {
+      const next = updater(prev);
+      if (selectedInv) setSelectedInv(next.find(i=>i.id===selectedInv.id)||null);
+      return next;
+    });
+  };
+
+  const handleUpdatePrice = (invId, itemId, price) =>
+    updateInvoices(p=>p.map(inv=>inv.id===invId?{...inv,items:inv.items.map(it=>it.id===itemId?{...it,sellingPriceUnit:price}:it)}:inv));
+
+  const handleDeleteItem = (invId, itemId) =>
+    updateInvoices(p=>p.map(inv=>inv.id===invId?{...inv,items:inv.items.filter(it=>it.id!==itemId)}:inv));
+
+  const handleSaveNew = inv => { setInvoices(p=>[...p,inv]); setSelectedInv(inv); setView('detail'); };
+  const handleDelete  = () => { setInvoices(p=>p.filter(i=>i.id!==toDelete)); setToDelete(null); setView('dashboard'); };
+
+  return (
+    <div className="flex justify-center items-start min-h-screen bg-slate-300 sm:items-center sm:py-8">
+      <div className="w-full max-w-sm min-h-screen sm:min-h-0 sm:h-[820px] bg-white sm:rounded-[40px] shadow-2xl overflow-hidden relative sm:border-[8px] border-slate-900">
+        <ConfirmModal isOpen={!!toDelete} title="Supprimer cette facture ?" message="Cette action est irréversible."
+          onConfirm={handleDelete} onCancel={()=>setToDelete(null)}/>
+        {view==='dashboard'&&
+          <DashboardView invoices={invoices}
+            onScanClick={()=>setView('scanner')}
+            onManualClick={()=>setView('manual')}
+            onSimulatorClick={()=>setView('simulator')}
+            onStatsClick={()=>setView('stats')}
+            onSettingsClick={()=>setView('settings')}
+            onSelect={inv=>{setSelectedInv(inv);setView('detail');}}
+            onMarkRecovered={id=>updateInvoices(p=>p.map(i=>i.id===id?{...i,isRecovered:true}:i))}
+            onDeleteRequest={id=>setToDelete(id)}/>}
+        {view==='scanner'&&  <ScannerView onCancel={()=>setView('dashboard')} onScanComplete={handleSaveNew}/>}
+        {view==='manual'&&   <ManualEntryView onCancel={()=>setView('dashboard')} onSave={handleSaveNew}/>}
+        {view==='settings'&& <SettingsView onCancel={()=>setView('dashboard')}/>}
+        {view==='detail'&&selectedInv&&
+          <DetailView inv={selectedInv}
+            onCancel={()=>setView('dashboard')}
+            onUpdatePrice={handleUpdatePrice}
+            onDeleteRequest={id=>setToDelete(id)}
+            onDeleteItem={handleDeleteItem}/>}
+        {view==='simulator'&&<SimulatorView invoices={invoices} onCancel={()=>setView('dashboard')}/> }
+        {view==='stats'&&<StatsView invoices={invoices} onCancel={()=>setView('dashboard')}/>}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<App/>, document.getElementById('root'));
+</script>
+</body>
+</html>
