@@ -36,6 +36,7 @@ const IconPlus         = ({s=24,c=""}) => <svg width={s} height={s} className={c
 const IconUpload       = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>;
 const IconKey          = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>;
 const IconSettings     = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+const IconBarChart     = ({s=24,c=""}) => <svg width={s} height={s} className={c} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/><line x1="2" y1="20" x2="22" y2="20"/></svg>;
 
 // ── PERSISTANCE ──────────────────────────────────────────────────────────────
 const DB_INVOICES = 'scanmarges_invoices_v3';
@@ -287,7 +288,7 @@ const SettingsView = ({ onCancel }) => {
 };
 
 // ── VUE DASHBOARD ────────────────────────────────────────────────────────────
-const DashboardView = ({ invoices, onScanClick, onManualClick, onSimulatorClick, onSettingsClick, onSelect, onMarkRecovered, onDeleteRequest }) => {
+const DashboardView = ({ invoices, onScanClick, onManualClick, onSimulatorClick, onStatsClick, onSettingsClick, onSelect, onMarkRecovered, onDeleteRequest }) => {
   const hasKey = !!loadKey();
   const totalGain = invoices.reduce((acc,inv)=>acc+calcMargin(inv).euro, 0);
   const sorted = [...invoices].sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -350,15 +351,18 @@ const DashboardView = ({ invoices, onScanClick, onManualClick, onSimulatorClick,
         {sorted.length>0&&<p className="text-center text-xs text-slate-400 mt-1">← Glissez : encaisser / supprimer →</p>}
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-4 py-4 flex gap-3">
-        <button onClick={onSimulatorClick} className="bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
-          <IconTrendingUp s={22}/>
+      <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 px-4 py-4 flex gap-2">
+        <button onClick={onSimulatorClick} title="Simulateur" className="bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+          <IconTrendingUp s={20}/>
         </button>
-        <button onClick={onManualClick} className="bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+        <button onClick={onStatsClick} title="Statistiques" className="bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
+          <IconBarChart s={20}/>
+        </button>
+        <button onClick={onManualClick} title="Saisie manuelle" className="bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform p-3">
           <IconEdit s={20}/>
         </button>
         <button onClick={onScanClick} className="flex-1 bg-blue-600 text-white rounded-2xl shadow-lg flex items-center justify-center gap-2 font-bold active:scale-95 transition-transform text-sm py-3">
-          <IconUpload s={20}/>Scanner une facture
+          <IconUpload s={18}/>Scanner
         </button>
       </div>
     </div>
@@ -722,6 +726,189 @@ const SimulatorView = ({ invoices, onCancel }) => {
   );
 };
 
+
+// ── VUE STATISTIQUES ─────────────────────────────────────────────────────────
+const StatsView = ({ invoices, onCancel }) => {
+  const [mode, setMode] = useState('month'); // 'month' | 'year'
+
+  const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
+  // Calcule les gains par mois (12 derniers mois)
+  const monthlyData = () => {
+    const now = new Date();
+    const data = [];
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${d.getMonth()}`;
+      const label = MONTHS_FR[d.getMonth()] + (i > 0 && d.getFullYear() < now.getFullYear() ? ' ' + String(d.getFullYear()).slice(2) : '');
+      const gain = invoices
+        .filter(inv => { const id = new Date(inv.date); return id.getFullYear() === d.getFullYear() && id.getMonth() === d.getMonth(); })
+        .reduce((acc, inv) => acc + calcMargin(inv).euro, 0);
+      data.push({ label, gain: parseFloat(gain.toFixed(2)) });
+    }
+    return data;
+  };
+
+  // Calcule les gains par année (5 dernières années)
+  const yearlyData = () => {
+    const now = new Date();
+    const data = [];
+    for (let i = 4; i >= 0; i--) {
+      const year = now.getFullYear() - i;
+      const gain = invoices
+        .filter(inv => new Date(inv.date).getFullYear() === year)
+        .reduce((acc, inv) => acc + calcMargin(inv).euro, 0);
+      data.push({ label: String(year), gain: parseFloat(gain.toFixed(2)) });
+    }
+    return data;
+  };
+
+  const data = mode === 'month' ? monthlyData() : yearlyData();
+  const maxGain = Math.max(...data.map(d => Math.abs(d.gain)), 1);
+  const totalGain = data.reduce((a, d) => a + d.gain, 0);
+  const avgGain = data.filter(d => d.gain !== 0).length > 0
+    ? totalGain / data.filter(d => d.gain !== 0).length : 0;
+  const bestPeriod = data.reduce((best, d) => d.gain > best.gain ? d : best, data[0] || {gain:0});
+
+  // Graphique SVG en barres
+  const BAR_W = mode === 'month' ? 18 : 36;
+  const CHART_H = 140;
+  const CHART_W = 300;
+  const barCount = data.length;
+  const spacing = (CHART_W - barCount * BAR_W) / (barCount + 1);
+
+  return (
+    <div className="flex flex-col h-full bg-slate-50 text-slate-900">
+      <header className="bg-emerald-700 text-white px-4 pt-10 pb-4 flex items-center justify-between rounded-b-3xl shadow-lg">
+        <button onClick={onCancel} className="p-2 bg-white/20 rounded-full"><IconArrowLeft s={20}/></button>
+        <h2 className="font-bold text-lg">Statistiques</h2>
+        <div className="w-10"/>
+      </header>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-10">
+
+        {/* Toggle mois / année */}
+        <div className="bg-white rounded-2xl p-1.5 flex shadow-sm border border-slate-100">
+          <button onClick={()=>setMode('month')}
+            className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${mode==='month'?'bg-emerald-600 text-white shadow':'text-slate-400'}`}>
+            Par mois
+          </button>
+          <button onClick={()=>setMode('year')}
+            className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${mode==='year'?'bg-emerald-600 text-white shadow':'text-slate-400'}`}>
+            Par année
+          </button>
+        </div>
+
+        {/* Cartes résumé */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Gain total</p>
+            <p className={`text-2xl font-black mt-1 ${totalGain>=0?'text-emerald-600':'text-red-500'}`}>{totalGain.toFixed(2)} €</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Moyenne</p>
+            <p className={`text-2xl font-black mt-1 ${avgGain>=0?'text-blue-600':'text-red-500'}`}>{avgGain.toFixed(2)} €</p>
+            <p className="text-[9px] text-slate-400 mt-0.5">{mode==='month'?'/ mois actif':'/ année active'}</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Meilleure période</p>
+            <p className="text-lg font-black mt-1 text-slate-800">{bestPeriod?.label || '—'}</p>
+            <p className="text-[10px] text-emerald-600 font-bold">{bestPeriod?.gain?.toFixed(2) || 0} €</p>
+          </div>
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+            <p className="text-[10px] text-slate-400 uppercase font-bold">Factures</p>
+            <p className="text-2xl font-black mt-1 text-slate-800">{invoices.length}</p>
+            <p className="text-[9px] text-slate-400 mt-0.5">au total</p>
+          </div>
+        </div>
+
+        {/* Graphique */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+          <p className="text-xs font-bold text-slate-500 uppercase mb-4">
+            {mode==='month'?'Gains — 12 derniers mois':'Gains — 5 dernières années'}
+          </p>
+
+          {invoices.length === 0 ? (
+            <div className="text-center text-slate-400 py-10 text-sm">
+              <IconBarChart s={40} c="mx-auto mb-3 opacity-30"/>
+              <p>Aucune donnée à afficher</p>
+              <p className="text-xs mt-1">Ajoutez des factures avec des prix de vente</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <svg viewBox={`0 0 ${CHART_W} ${CHART_H + 30}`} className="w-full" style={{minWidth: mode==='month'?'300px':'200px'}}>
+                {/* Lignes de grille */}
+                {[0, 0.25, 0.5, 0.75, 1].map((r, i) => (
+                  <g key={i}>
+                    <line x1="0" y1={CHART_H * (1-r)} x2={CHART_W} y2={CHART_H * (1-r)}
+                      stroke="#f1f5f9" strokeWidth="1"/>
+                    <text x="0" y={CHART_H * (1-r) - 2} fontSize="7" fill="#94a3b8">
+                      {(maxGain * r).toFixed(0)}€
+                    </text>
+                  </g>
+                ))}
+
+                {/* Barres */}
+                {data.map((d, i) => {
+                  const x = spacing + i * (BAR_W + spacing);
+                  const barH = Math.max(2, (Math.abs(d.gain) / maxGain) * CHART_H);
+                  const y = d.gain >= 0 ? CHART_H - barH : CHART_H;
+                  const color = d.gain > 0 ? '#10b981' : d.gain < 0 ? '#ef4444' : '#e2e8f0';
+                  return (
+                    <g key={i}>
+                      <rect x={x} y={y} width={BAR_W} height={barH}
+                        fill={color} rx="3" opacity="0.85"/>
+                      {d.gain !== 0 && (
+                        <text x={x + BAR_W/2} y={y - 3} textAnchor="middle" fontSize="6" fill={color} fontWeight="bold">
+                          {d.gain > 0 ? '+' : ''}{d.gain.toFixed(0)}
+                        </text>
+                      )}
+                      <text x={x + BAR_W/2} y={CHART_H + 14} textAnchor="middle" fontSize="7" fill="#64748b">
+                        {d.label}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Ligne zéro */}
+                <line x1="0" y1={CHART_H} x2={CHART_W} y2={CHART_H} stroke="#cbd5e1" strokeWidth="1"/>
+              </svg>
+            </div>
+          )}
+
+          <div className="flex gap-4 mt-3 justify-center">
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm bg-emerald-500"/>Gain positif
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm bg-red-400"/>Gain négatif
+            </div>
+          </div>
+        </div>
+
+        {/* Détail par période */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="px-4 py-3 border-b border-slate-100">
+            <p className="text-xs font-bold text-slate-500 uppercase">Détail</p>
+          </div>
+          {data.filter(d => d.gain !== 0).length === 0
+            ? <p className="text-center text-slate-400 text-sm py-6">Aucun gain enregistré</p>
+            : [...data].reverse().filter(d => d.gain !== 0).map((d, i) => (
+              <div key={i} className="flex justify-between items-center px-4 py-3 border-b border-slate-50 last:border-0">
+                <p className="font-semibold text-slate-700 text-sm">{d.label}</p>
+                <p className={`font-black text-sm ${d.gain>0?'text-emerald-600':'text-red-500'}`}>
+                  {d.gain>0?'+':''}{d.gain.toFixed(2)} €
+                </p>
+              </div>
+            ))
+          }
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 // ── APP PRINCIPALE ───────────────────────────────────────────────────────────
 function App() {
   const [view, setView]               = useState('dashboard');
@@ -758,6 +945,7 @@ function App() {
             onScanClick={()=>setView('scanner')}
             onManualClick={()=>setView('manual')}
             onSimulatorClick={()=>setView('simulator')}
+            onStatsClick={()=>setView('stats')}
             onSettingsClick={()=>setView('settings')}
             onSelect={inv=>{setSelectedInv(inv);setView('detail');}}
             onMarkRecovered={id=>updateInvoices(p=>p.map(i=>i.id===id?{...i,isRecovered:true}:i))}
@@ -771,7 +959,8 @@ function App() {
             onUpdatePrice={handleUpdatePrice}
             onDeleteRequest={id=>setToDelete(id)}
             onDeleteItem={handleDeleteItem}/>}
-        {view==='simulator'&&<SimulatorView invoices={invoices} onCancel={()=>setView('dashboard')}/>}
+        {view==='simulator'&&<SimulatorView invoices={invoices} onCancel={()=>setView('dashboard')}/> }
+        {view==='stats'&&<StatsView invoices={invoices} onCancel={()=>setView('dashboard')}/>}
       </div>
     </div>
   );
