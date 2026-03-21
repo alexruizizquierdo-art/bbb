@@ -107,22 +107,28 @@ Règles IMPORTANTES :
 - Ignore les lignes de totaux, sous-totaux, remises et frais de port.
 - purchasePriceUnit = nombre décimal uniquement (ex: 12.50).`;
 
-// Convertit la première page d'un PDF en image JPEG via PDF.js
+// Convertit les pages d'un PDF en image JPEG via PDF.js
 const pdfToImage = async (file) => {
+  if (typeof pdfjsLib === 'undefined') {
+    throw new Error('PDF.js non chargé. Vérifiez votre connexion internet et rechargez la page.');
+  }
   const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise;
   const numPages = pdf.numPages;
+  const pagesToRender = Math.min(numPages, 3);
 
-  // Rend chaque page en canvas et les assemble verticalement
   const canvases = [];
   let totalHeight = 0, maxWidth = 0;
-  for (let p = 1; p <= Math.min(numPages, 3); p++) {
+  for (let p = 1; p <= pagesToRender; p++) {
     const page = await pdf.getPage(p);
-    const viewport = page.getViewport({ scale: 2.0 });
+    const viewport = page.getViewport({ scale: 1.8 });
     const canvas = document.createElement('canvas');
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    const ctx2 = canvas.getContext('2d');
+    ctx2.fillStyle = '#ffffff';
+    ctx2.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx2, viewport }).promise;
     canvases.push(canvas);
     totalHeight += viewport.height;
     maxWidth = Math.max(maxWidth, viewport.width);
@@ -140,7 +146,8 @@ const pdfToImage = async (file) => {
     ctx.drawImage(c, 0, offsetY);
     offsetY += c.height;
   }
-  return merged.toDataURL('image/jpeg', 0.85).split(',')[1];
+  // Compresse à 80% pour limiter la taille
+  return merged.toDataURL('image/jpeg', 0.80).split(',')[1];
 };
 
 const analyzeWithMistral = async (file, apiKey) => {
@@ -177,11 +184,23 @@ const analyzeWithMistral = async (file, apiKey) => {
   let lastError = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify(payload)
-      });
+      // Timeout 30 secondes pour éviter les analyses infinies
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      let res;
+      try {
+        res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+      } catch(fetchErr) {
+        clearTimeout(timeout);
+        if (fetchErr.name === 'AbortError') throw new Error("Délai dépassé (30s). Vérifiez votre connexion ou réessayez.");
+        throw fetchErr;
+      }
+      clearTimeout(timeout);
 
       if (res.status === 429) {
         // Rate limit — on attend et on réessaie
@@ -459,24 +478,33 @@ const ScannerView = ({ onCancel, onScanComplete }) => {
   const startAnalysis = async () => {
     setStep('analyzing'); setError(''); setProgress(0);
     const apiKey = loadKey();
+
+    // Timeout de 45 secondes pour éviter une attente infinie
+    const timeout = new Promise((_, rej) =>
+      setTimeout(() => rej(new Error('Délai dépassé (45s). Vérifiez votre connexion ou réessayez.')), 45000)
+    );
+
     try {
       if (apiKey) {
-        setStatus(isPdf ? 'Lecture du PDF par Mistral IA...' : 'Analyse Mistral en cours... (10-20 sec, nouvel essai auto si besoin)');
-        const data = await analyzeWithMistral(imgFile, apiKey);
+        setStatus(isPdf ? 'Conversion PDF en cours...' : 'Analyse Mistral en cours...');
+        const data = await Promise.race([analyzeWithMistral(imgFile, apiKey), timeout]);
         if (data.storeName) setStoreName(data.storeName);
         if (data.purchaseDate) setDate(data.purchaseDate);
         setItems(data.items.map((it,i)=>({...it, id:`ai_${i}`, sellingPriceUnit:''})));
         setStep('review');
       } else {
         setStatus('Analyse OCR en cours (Tesseract)...');
-        const parsed = await analyzeWithTesseract(imgFile, p=>{setProgress(p);});
+        const parsed = await Promise.race([analyzeWithTesseract(imgFile, p=>{setProgress(p);}), timeout]);
         setItems(parsed.map((it,i)=>({...it, id:`ocr_${i}`, sellingPriceUnit:''})));
         setStep(parsed.length>0?'review':'error');
         if (parsed.length===0) setError("Aucun article détecté. Photo floue ? Configurez la clé Mistral pour de meilleurs résultats.");
       }
     } catch(err) {
       setStep('error');
-      setError(err.message);
+      // Affiche le message complet pour faciliter le diagnostic
+      setError(`${err.message || 'Erreur inconnue'}
+
+[Type: ${err.name || '?'}]`);
     }
   };
 
@@ -595,10 +623,19 @@ const ScannerView = ({ onCancel, onScanComplete }) => {
         <button onClick={onCancel} className="p-2 bg-white/10 rounded-full"><IconArrowLeft s={22}/></button>
         <span className="font-bold text-lg">Erreur d'analyse</span>
       </header>
-      <div className="flex-1 flex flex-col items-center justify-center p-8 gap-5">
-        <div className="bg-red-500/20 rounded-3xl p-8 w-full text-center border border-red-500/30">
-          <p className="text-red-300 font-bold text-lg mb-2">Échec de l'analyse</p>
-          <p className="text-slate-400 text-sm">{error}</p>
+      <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-5">
+        <div className="bg-red-500/20 rounded-3xl p-6 w-full border border-red-500/30">
+          <p className="text-red-300 font-bold text-lg mb-3">Échec de l'analyse</p>
+          <p className="text-slate-300 text-sm whitespace-pre-wrap break-words">{error}</p>
+        </div>
+        <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+          <p className="text-slate-400 text-xs font-bold uppercase mb-2">Solutions possibles</p>
+          <div className="space-y-2 text-slate-400 text-xs">
+            <p>• Vérifiez que votre clé Mistral est correcte dans ⚙️</p>
+            <p>• Vérifiez votre connexion internet</p>
+            <p>• Réduisez la taille du PDF (1-2 pages max)</p>
+            <p>• Essayez avec une photo de la facture plutôt</p>
+          </div>
         </div>
         <button onClick={()=>setStep('pick')} className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold active:scale-95">Réessayer</button>
         <button onClick={onCancel} className="w-full bg-white/10 text-white py-3 rounded-2xl font-semibold active:scale-95">Saisie manuelle</button>
