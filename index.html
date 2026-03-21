@@ -4,17 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Scan & Marges — BBB</title>
-  <!-- PWA BBB — icône + manifest + plein écran -->
-  <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkJCQiDigJQgU2NhbiAmIE1hcmdlcyIsCiAgInNob3J0X25hbWUiOiAiQkJCIiwKICAiZGVzY3JpcHRpb24iOiAiU2Nhbm5leiB2b3MgZmFjdHVyZXMgZXQgY2FsY3VsZXogdm9zIG1hcmdlcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGYxNzJhIiwKICAidGhlbWVfY29sb3IiOiAiIzBmMTcyYSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNVElnTlRFeUlqNEtJQ0E4Y21WamRDQjNhV1IwYUQwaU5URXlJaUJvWldsbmFIUTlJalV4TWlJZ2NuZzlJakV3TUNJZ1ptbHNiRDBpSXpCbU1UY3lZU0l2UGdvZ0lEeHlaV04wSUhnOUlqRXpNQ0lnZVQwaU1URXdJaUIzYVdSMGFEMGlOakFpSUdobGFXZG9kRDBpTWpreUlpQnllRDBpTVRBaUlHWnBiR3c5SWlNellqZ3laallpTHo0S0lDQThjbVZqZENCNFBTSXhNekFpSUhrOUlqRXhNQ0lnZDJsa2RHZzlJakUxTlNJZ2FHVnBaMmgwUFNJMU9DSWdjbmc5SWpFd0lpQm1hV3hzUFNJak0ySTRNbVkySWk4K0NpQWdQSEpsWTNRZ2VEMGlNVE13SWlCNVBTSXlNamNpSUhkcFpIUm9QU0l4TlRVaUlHaGxhV2RvZEQwaU5UQWlJSEo0UFNJeE1DSWdabWxzYkQwaUl6TmlPREptTmlJdlBnb2dJRHh5WldOMElIZzlJakV6TUNJZ2VUMGlNelEwSWlCM2FXUjBhRDBpTVRVMUlpQm9aV2xuYUhROUlqVTRJaUJ5ZUQwaU1UQWlJR1pwYkd3OUlpTXpZamd5WmpZaUx6NEtJQ0E4Y0dGMGFDQmtQU0pOTWpnMUlERXhNQ0JSTXpneUlERXhNQ0F6T0RJZ01UazFJRkV6T0RJZ01qYzNJREk0TlNBeU56Y2dVVE00TWlBeU56Y2dNemd5SURNMk1pQlJNemd5SURRd01pQXlPRFVnTkRBeUlpQm1hV3hzUFNKdWIyNWxJaUJ6ZEhKdmEyVTlJaU16WWpneVpqWWlJSE4wY205clpTMTNhV1IwYUQwaU5UZ2lJSE4wY205clpTMXNhVzVsWTJGd1BTSnliM1Z1WkNJdlBnb2dJRHhqYVhKamJHVWdZM2c5SWpRd01DSWdZM2s5SWpRd01DSWdjajBpTXpBaUlHWnBiR3c5SWlNeU1tUXpaV1VpTHo0S1BDOXpkbWMrIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ=="/>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz4KPC9zdmc+"/>
-  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPgogIDxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz4KICA8cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz4KPC9zdmc+"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="BBB"/>
-  <meta name="application-name" content="BBB"/>
-  <meta name="theme-color" content="#0f172a"/>
-  <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- PDF.js : convertit les PDF en images pour Mistral -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
@@ -29,6 +19,14 @@
     .spin { animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
+  <!-- BBB PWA : installation comme vraie app -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="BBB"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#0f172a"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPjxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz48cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+PHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPjxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz48cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz48L3N2Zz4="/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzBmMTcyYSIvPjxyZWN0IHg9IjEzMCIgeT0iMTEwIiB3aWR0aD0iNjAiIGhlaWdodD0iMjkyIiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz48cmVjdCB4PSIxMzAiIHk9IjExMCIgd2lkdGg9IjE1NSIgaGVpZ2h0PSI1OCIgcng9IjEwIiBmaWxsPSIjM2I4MmY2Ii8+PHJlY3QgeD0iMTMwIiB5PSIyMjciIHdpZHRoPSIxNTUiIGhlaWdodD0iNTAiIHJ4PSIxMCIgZmlsbD0iIzNiODJmNiIvPjxyZWN0IHg9IjEzMCIgeT0iMzQ0IiB3aWR0aD0iMTU1IiBoZWlnaHQ9IjU4IiByeD0iMTAiIGZpbGw9IiMzYjgyZjYiLz48cGF0aCBkPSJNMjg1IDExMCBRMzgyIDExMCAzODIgMTk1IFEzODIgMjc3IDI4NSAyNzcgUTM4MiAyNzcgMzgyIDM2MiBRMzgyIDQwMiAyODUgNDAyIiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iNTgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMzAiIGZpbGw9IiMyMmQzZWUiLz48L3N2Zz4="/>
 </head>
 <body class="bg-slate-300">
 <div id="root"></div>
@@ -1130,16 +1128,6 @@ function App() {
 ReactDOM.render(<App/>, document.getElementById('root'));
 </script>
 
-  <script>
-    // Enregistre le Service Worker pour permettre l'installation comme PWA
-    if ('serviceWorker' in navigator) {
-      const swCode = atob("Ci8vIFNlcnZpY2UgV29ya2VyIEJCQiDigJQgY2FjaGUgbWluaW1hbCBwb3VyIGluc3RhbGxhdGlvbiBQV0EKY29uc3QgQ0FDSEUgPSAnYmJiLXYxJzsKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZSA9PiB7IHNlbGYuc2tpcFdhaXRpbmcoKTsgfSk7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBlID0+IHsgZS53YWl0VW50aWwoY2xpZW50cy5jbGFpbSgpKTsgfSk7CnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignZmV0Y2gnLCBlID0+IHsgZS5yZXNwb25kV2l0aChmZXRjaChlLnJlcXVlc3QpLmNhdGNoKCgpID0+IGNhY2hlcy5tYXRjaChlLnJlcXVlc3QpKSk7IH0pOwo=");
-      const blob = new Blob([swCode], {type: 'application/javascript'});
-      const swUrl = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(swUrl, {scope: './'})
-        .then(() => console.log('BBB PWA: Service Worker enregistré'))
-        .catch(e => console.log('BBB PWA: SW error', e));
-    }
-  </script>
+
 </body>
 </html>
