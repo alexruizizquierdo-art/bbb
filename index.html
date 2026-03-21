@@ -12,6 +12,9 @@
   <meta name="apple-mobile-web-app-title" content="BBB"/>
   <meta name="theme-color" content="#0f172a"/>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- PDF.js : convertit les PDF en images pour Mistral -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -104,36 +107,61 @@ Règles IMPORTANTES :
 - Ignore les lignes de totaux, sous-totaux, remises et frais de port.
 - purchasePriceUnit = nombre décimal uniquement (ex: 12.50).`;
 
+// Convertit la première page d'un PDF en image JPEG via PDF.js
+const pdfToImage = async (file) => {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const numPages = pdf.numPages;
+
+  // Rend chaque page en canvas et les assemble verticalement
+  const canvases = [];
+  let totalHeight = 0, maxWidth = 0;
+  for (let p = 1; p <= Math.min(numPages, 3); p++) {
+    const page = await pdf.getPage(p);
+    const viewport = page.getViewport({ scale: 2.0 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    canvases.push(canvas);
+    totalHeight += viewport.height;
+    maxWidth = Math.max(maxWidth, viewport.width);
+  }
+
+  // Assemble toutes les pages dans un seul canvas
+  const merged = document.createElement('canvas');
+  merged.width = maxWidth;
+  merged.height = totalHeight;
+  const ctx = merged.getContext('2d');
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, maxWidth, totalHeight);
+  let offsetY = 0;
+  for (const c of canvases) {
+    ctx.drawImage(c, 0, offsetY);
+    offsetY += c.height;
+  }
+  return merged.toDataURL('image/jpeg', 0.85).split(',')[1];
+};
+
 const analyzeWithMistral = async (file, apiKey) => {
   const isPdf = file.type === 'application/pdf';
 
-  // Contenu du message selon le type de fichier
-  let contentBlocks;
+  // Pour un PDF : convertit en image via PDF.js, puis envoie à Pixtral
+  // Pour une image : compresse et envoie directement
+  let base64;
   if (isPdf) {
-    // PDF : envoyé comme document base64 — Mistral lit toutes les pages
-    const base64 = await fileToBase64(file);
-    contentBlocks = [
-      {
-        type: "document",
-        source: {
-          type: "base64",
-          media_type: "application/pdf",
-          data: base64
-        }
-      },
-      { type: "text", text: PROMPT_FACTURE }
-    ];
+    base64 = await pdfToImage(file);
   } else {
-    // Image : compressée avant envoi
-    const base64 = await compressImage(file);
-    contentBlocks = [
-      {
-        type: "image_url",
-        image_url: { url: `data:image/jpeg;base64,${base64}` }
-      },
-      { type: "text", text: PROMPT_FACTURE }
-    ];
+    base64 = await compressImage(file);
   }
+
+  const contentBlocks = [
+    {
+      type: "image_url",
+      image_url: { url: `data:image/jpeg;base64,${base64}` }
+    },
+    { type: "text", text: PROMPT_FACTURE }
+  ];
 
   const payload = {
     model: "pixtral-large-latest",
